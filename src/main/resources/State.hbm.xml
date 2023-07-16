@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping>
+    <class name="test_db_entities.State" table="state" >
+        <id name="id" type="java.lang.Integer" column="id" >
+            <generator class="increment" />
+        </id>
+        <property name="ip" type="java.lang.String" column="ip" length="20" />
+        <property name="port" type="java.lang.Integer" column="port" />
+        <property name="currentTurn" type="java.lang.Integer" column="currentTurn" length="100" />
+        <property name="lastScore" type="java.lang.Integer" column="lastScore"  />
+        <property name="players" type="java.lang.String" column="players" length="100"/>
+        <property name="bag" type="java.lang.String" column="bag" length="98" />
+        <property name="lastTurnBoard" type="java.lang.String" column="lastTurnBoard" length="225"/>
+        <property name="board" type="java.lang.String" column="board" length="225"/>
+
+    </class>
+</hibernate-mapping>
