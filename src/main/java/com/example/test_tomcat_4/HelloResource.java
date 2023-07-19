@@ -1,19 +1,31 @@
 package com.example.test_tomcat_4;
 
 import RequestsAndResponses.HttpMacros;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import test_db_entities.State;
 import test_db_managers.StateManager;
 
 import javax.ws.rs.*;
+import java.util.List;
 
 @Path(HttpMacros.resourcePrefix)
 public class HelloResource {
     @GET
-    @Path("/test1")
+    @Path("/getState")
     @Produces("text/plain")
-    public String hello() {
-        return "Hello, Wodffgdfrld!";
+    public String getStates (@QueryParam("IP") String IP, @QueryParam("port") int port) {
+        String gameIp = IP;
+        int gamePort = port;
+        String query = String.format("from State where ip  = \'%s\' and port = \'%d\'", gameIp, gamePort);
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Query query1 = session.createQuery(query);
+        List<State> list1 = query1.list();
+        return list1.get(0).toSaveString();
+
     }
 
 //    @GET
@@ -27,7 +39,7 @@ public class HelloResource {
     @POST
     @Path("/saveState")
     @Produces("text/plain")
-    public String hello(String stateString) {
+    public String saveState(String stateString) {
         System.out.println("we're in.");
         State testState = new State();
         testState.fromSaveString(stateString);
