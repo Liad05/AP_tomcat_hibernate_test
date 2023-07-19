@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainWindowController">
+   <top>
+      <HBox fx:id="buttonContainer" alignment="CENTER" prefHeight="14.0" prefWidth="505.0">
+         <children>
+            <Label fx:id="tilesLeft" prefHeight="18.0" prefWidth="182.0" text="num of tiles in bag" />
+            <Button fx:id="helpButton" mnemonicParsing="false" onAction="#showHelp" prefHeight="26.0" prefWidth="51.0" text="Help" />
+            <Button fx:id="saveGameButton" mnemonicParsing="false" onAction="#saveGame" prefHeight="26.0" prefWidth="86.0" text="Save Game" />
+            <Button fx:id="loadGameButton" mnemonicParsing="false" onAction="#loadGame" prefHeight="26.0" prefWidth="86.0" text="Load Game" /> <!-- Added Load Game button -->
+            <Label fx:id="letterSelected" prefHeight="13.0" prefWidth="47.0" text="letter" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <GridPane fx:id="gameBoard" prefHeight="381.0" prefWidth="615.0" BorderPane.alignment="CENTER">
+         <!-- This grid will be populated in the controller -->
+      </GridPane>
+   </center>
+   <right>
+      <VBox>
+         <ListView fx:id="letterList" minHeight="179.0" minWidth="84.0" prefHeight="179.0" prefWidth="84.0" />
+         <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#showConfirm" prefHeight="25.0" prefWidth="86.0" text="Confirm" />
+         <Button fx:id="undoButton" mnemonicParsing="false" onAction="#undo" prefHeight="25.0" prefWidth="86.0" text="Undo" />
+         <Button fx:id="PassButton" mnemonicParsing="false" onAction="#pass" prefHeight="25.0" prefWidth="86.0" text="Pass" />
+         <Button fx:id="ChallengeButton" mnemonicParsing="false" onAction="#challenge" prefHeight="25.0" prefWidth="86.0" text="Challenge" />
+         <Label fx:id="turn" prefHeight="17.0" prefWidth="85.0" text="Turn" />
+         <Label fx:id="confirmSelected" prefHeight="17.0" prefWidth="77.0" text="Confirmation" />
+         <Label fx:id="wordAdded" prefHeight="17.0" prefWidth="89.0" text="Word added" />
+         <Label fx:id="playerPoints" prefHeight="54.0" prefWidth="128.0" text="Player's points" />
+      </VBox>
+   </right>
+</BorderPane>

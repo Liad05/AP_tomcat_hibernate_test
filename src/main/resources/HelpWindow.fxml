@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextAlignment?>
+
+<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HelpMenuController" spacing="10" style="-fx-background-color: #ececec; -fx-padding: 15;">
+    <Label text="Scrabble Game Guide:" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #4a4a4a;" />
+    <Label text="Each player draws seven tiles. Game begins with the player with a letter closest to 'A'." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="The first player places a word on the board's star square, reading either across or down." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="On each turn, players place a word on the board, always connecting with an existing word." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="After each turn, players refill their rack from the bag to hold seven tiles." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="Players may exchange their tiles during their turn if they can't or don't wish to form a word." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="Each letter has a point value. Total score for a turn is the sum of all letters placed." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="Words on 'Double' or 'Triple' squares multiply the score of that word or letter." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="Using all seven tiles in a turn grants a bonus, typically 50 points." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="Game ends when all tiles are drawn and used, or no more plays can be made." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="The player with the highest score wins the game." wrapText="true" textAlignment="JUSTIFY" />
+    <Label text="Note: Verify words with a dictionary before the game. Blanks can be any letter but have no points." wrapText="true" textAlignment="JUSTIFY" />
+    <Button fx:id="closeButton" text="Close" onAction="#closeHelp" style="-fx-font-size: 16; -fx-background-color: #4a4a4a; -fx-text-fill: #ffffff; -fx-padding: 10; -fx-cursor: hand;" />
+</VBox>

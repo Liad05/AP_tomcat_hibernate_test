@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.Background?>
+
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EndGameController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <background>
+        <Background>
+            <fills>
+
+            </fills>
+        </Background>
+    </background>
+    <Label fx:id="titleLabel" text="End of Game">
+        <font>
+            <Font size="28.0"/>
+        </font>
+    </Label>
+    <ListView fx:id="scoresListView" prefHeight="200">
+
+    </ListView>
+    <Label fx:id="winnerLabel" text="Winner:">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <Button fx:id="backButton" text="Back to Main Menu" onAction="#backToMainMenu">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Button>
+</VBox>

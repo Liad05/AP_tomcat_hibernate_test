@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HostWindowController">
+   <children>
+      <Button fx:id="startGameButton" layoutX="98.0" layoutY="185.0" mnemonicParsing="false" onAction="#startGame" prefHeight="138.0" prefWidth="295.0" text="Start Game" />
+      <Button fx:id="loadGameButton" layoutX="98.0" layoutY="340.0" mnemonicParsing="false" onAction="#loadGame" prefHeight="42.0" prefWidth="295.0" text="Load Game" />
+      <Label layoutX="10.0" layoutY="390.0" prefHeight="42.0" prefWidth="598.0" text="Load game will load a game that has been previously played on the chosen IP and port">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="PlayerNumber" layoutX="98.0" layoutY="56.0" prefHeight="42.0" prefWidth="329.0" text="Player Number">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="numberOfPlayersLabel1" layoutX="98.0" layoutY="115.0" prefHeight="42.0" prefWidth="510.0" text="Number Of Players Connected">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
