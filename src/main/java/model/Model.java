@@ -20,22 +20,16 @@ public class Model extends Observable {
 	private Socket client;
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean isHost = false;
-	private boolean exit = false;
 
 	// game attributes
 	private String letterList;
 	private ArrayList<String> newLetterList = new ArrayList<>();
-
-	// need to change every instance of gameManager to call to the playerHandler
-	private static GameManager gameManager;
 	private byte[][] bonus;
 	private String[][] updatedBoard;
 	private int turn = 0;
 	private int lastScore = 0;
 	private String scores = "";
 	private int numPlayers=0;
-	private int numTilesLeft=0;
 	// labels
 	private String boardState, help, confirm;
 	private char letter;
@@ -72,7 +66,6 @@ public class Model extends Observable {
 			out.println(ip);
 			out.println(port);
 			System.out.println("Connected to server, client " + id);
-			isHost = id == 0;
 
 			// second step: sending it back to the playerHandler
 			out.println(id);
@@ -247,19 +240,6 @@ public class Model extends Observable {
 		notifyObservers(protocols.GET_TURN);
 
 	}
-
-
-
-
-//	public void addLetter(CharacterData cd) {
-//		characterList.stream()
-//				.filter(c -> c.compareIndex(cd))
-//				.findFirst()
-//				.ifPresentOrElse(
-//						existingCharacter -> existingCharacter.setLetter(cd.getLetter()),
-//						() -> characterList.add(cd)
-//				);
-//	}
 	public void addLetter(CharacterData cd) {
 		characterList.stream()
 				.filter(c -> c.compareIndex(cd))
@@ -297,8 +277,6 @@ public class Model extends Observable {
 	public void passSelected() {
 		// need to check if game is over
 		out.println(protocols.PASS);
-//		setChanged();
-//		notifyObservers("pass");
 	}
 	public void challengeSelected() {
 		out.println(protocols.CHALLENGE);
@@ -329,7 +307,6 @@ public class Model extends Observable {
 	}
 	public byte[][] getBonus() {
 		return this.bonus;
-//		return gameManager.getBonusBoard();
 	}
 
 	public void cleanList() {
@@ -449,17 +426,6 @@ public class Model extends Observable {
 		return wordSelected;
 	}
 
-
-	public void restart() {
-		System.out.println("New Game");
-		characterList.clear();
-		wordSelected="";
-		rowCur=-1; colCur=-1;
-		gameManager.restartGame();
-		setChanged();
-		notifyObservers("restart");
-	}
-
 	private static boolean isHorizontalWord(ArrayList<CharacterData> characterList) {
 		// return true if the word is horizontal
 		characterList.sort(Comparator.comparing(CharacterData::getColumn));
@@ -497,15 +463,6 @@ public class Model extends Observable {
 			}
 		return "Illegal";
 
-	}
-
-
-//	public Player getCurrentPlayer() {
-//		return gameManager.getCurrentPlayer();
-//	}
-
-	public String getTilesLeft() {
-		return "Tiles left in the bag: "+this.numTilesLeft;
 	}
 	public String getPlayerScore() {
 		return this.scores;
@@ -545,8 +502,6 @@ public class Model extends Observable {
 	}
 
 	public String getNumPlayers() {
-//		gameManager = GameManager.get();
-//		return ""+gameManager.getNumPlayers();
 		return ""+this.numPlayers;
 	}
 

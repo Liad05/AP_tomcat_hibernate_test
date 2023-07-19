@@ -20,7 +20,6 @@ public class ViewModel extends Observable implements Observer {
 
 	Model m;
 	private BooleanProperty gameStartedProperty, isGameOver;
-
 	public IntegerProperty[][] bonus_vm; // saves the bonus tiles
 	public StringProperty wordSelected, tilesLeft, letter, confirm, row, col, wordDirection, playerPoints, turn, numPlayers, id; // all strings that binded to labels in the view
 	public SimpleStringProperty[][] board; // saves the letters on the board
@@ -45,7 +44,6 @@ public class ViewModel extends Observable implements Observer {
 		setChanged();
 		notifyObservers(newBoardState);
 		System.out.println("ViewModel: " + newBoardState);
-
 		switch (newBoardState) {
 			//case "help" -> handleHelpRequest();
 			case protocols.START_GAME:
@@ -84,15 +82,91 @@ public class ViewModel extends Observable implements Observer {
 			case protocols.END_GAME:
 				handleEndGame();
 				break;
-//			case "restart" -> handleRestartRequest();
-//			default -> {
-//				if (obj instanceof Character) {
-//					handleLetterSelection();
-//				}
-//			}
+
 		}
 	}
+	//***************************************************************************************************************
+	// functions to handle changes in the game
+	private void handleStartGame() {
+		gameStartedProperty.set(true);
+		setBonus_vm(m.getBonus());
+		resetGameBoard();
+		updateLetterList();
+		confirm.set("");
+		wordSelected.set("");
+		row.set("");
+		col.set("");
+		wordDirection.set("");
+		userInput.clear();
+		System.out.println("userInput: "+userInput);
 
+		m.cleanList();
+		playerPoints.set(m.getPlayerScore());
+	}
+	private void handleConfirmation() {
+
+		if(isPlayerTurn)
+		{
+			Platform.runLater(() -> {
+						// update labels
+						confirm.set(m.getConfirm());
+						wordSelected.set("");
+
+						// this is the function that places the word on the board aka m.getWordSelected()
+						m.tryPlaceWord();
+						wordSelected.set(m.getWordSelected());
+
+						// update labels
+						row.set(m.getRow());
+						col.set(m.getCol());
+
+						// sanity check
+						System.out.println("word selected: " + wordSelected.get());
+						// try to add the word to the board
+
+						// wordselcted is the word that the user has selected
+						// if wordSelcted="" then the word is not valid
+						// if wordSelected!="", then the word is valid
+						if (!wordSelected.get().equals("") )
+						{
+							wordDirection.set(m.getWordDirection());
+						}
+						else {
+							int wordSize = userInput.size();
+							for (int i = 0; i < wordSize; i++) {
+								m.undoSelected();
+							}
+						}
+
+						// after word is confirmed, the letters are added to the board
+						// now the server will tell all the players to update their boards
+
+						lastEntry.clear();
+						lastEntry.addAll(userInput);
+						userInput.clear();
+
+						m.cleanList();
+						m.serverSendMessagesToAllClients(protocols.BOARD_CHANGED);
+						System.out.println("Message sent: BOARD_CHANGED");
+						m.serverSendMessagesToAllClients(protocols.UPDATE_SCORE);
+						System.out.println("Message sent: UPDATE_SCORE");
+						m.serverSendMessagesToAllClients(protocols.UPDATE_TURN);
+						System.out.println("Message sent: UPDATE_TURN");
+						turn.set(m.getTurn());
+
+					}
+			);
+
+
+		}
+
+
+
+	}
+	private void handleChallengeRequest() {
+		confirm.set("Challenge");
+		wordSelected.set("");
+	}
 	private void handleEndGame() {
 		System.out.println("Game Ended");
 		playerPoints.set(m.getScore());
@@ -105,12 +179,64 @@ public class ViewModel extends Observable implements Observer {
 			numPlayers.set("Number Of Player Connected: "+m.getNumPlayers());
 		});
 	}
+	private void handleClearRequest() {
+		confirm.set("");
+		wordSelected.set("");
+		row.set("");
+		col.set("");
+		wordDirection.set("");
+	}
+	public void handlePass() {
+		if(isPlayerTurn) {
+			Platform.runLater(() -> {
+				confirm.set("Passed Turn");
+				wordSelected.set("");
+				row.set("");
+				col.set("");
+				wordDirection.set("");
+				ArrayList<CharacterData> input = m.getCharacterList();
+				int wordSize = input.size();
+				for (CharacterData characterData : input) {
+					board[characterData.getRow()][characterData.getColumn()].set("");
+					setBackground(characterData.getRow(), characterData.getColumn());
+				}
+				userInput.clear();
+				System.out.println("userInput: " + userInput);
 
+				m.cleanList();
+				updateLetterList();
+				m.serverSendMessagesToAllClients(protocols.UPDATE_TURN);
+				System.out.println("Message sent: UPDATE_TURN");
+				turn.set(m.getTurn());
+				//getTilesLeft();
+			});
+		}
+	}
+	private void handleUndoRequest() {
+		Platform.runLater(() -> {
+					CharacterData input = m.getUndoLetter();
 
+					if (input!=null) {
+						confirm.set("");
+						wordSelected.set("");
+						row.set("");
+						col.set("");
+						wordDirection.set("");
+						int i = input.getRow();
+						int j = input.getColumn();
+						letterList.add(Character.toString(input.getLetter()));
+						board[i][j].set("");
+						setBackground(i, j);
+					}
+					//m.serverSendMessagesToAllClients(protocols.BOARD_CHANGED);
+
+				}
+		);
+
+	}
 	private void updateTurn() {
 		isPlayerTurn = m.isPlayerTurn();
 	}
-
 	private void updateScore() {
 		Platform.runLater(() -> {
 
@@ -145,7 +271,6 @@ public class ViewModel extends Observable implements Observer {
 	}
 
 	public void updateBoard(String[][] newBoard){
-		System.out.println(Arrays.deepToString(newBoard));
 		for(int i=0;i<15;i++){
 			for(int j=0;j<15;j++){
 
@@ -162,6 +287,8 @@ public class ViewModel extends Observable implements Observer {
 			}
 		}
 	}
+
+	//***************************************************************************************************************
 	// functions that activate the functions in the model
 
 	public void confirmSelected() {
@@ -201,100 +328,7 @@ public class ViewModel extends Observable implements Observer {
 
 
 
-	private void handleStartGame() {
-		gameStartedProperty.set(true);
-		setBonus_vm(m.getBonus());
-		resetGameBoard();
-		updateLetterList();
-		confirm.set("");
-		wordSelected.set("");
-		row.set("");
-		col.set("");
-		wordDirection.set("");
-		userInput.clear();
-		System.out.println("userInput: "+userInput);
 
-		m.cleanList();
-		getTilesLeft();
-		playerPoints.set(m.getPlayerScore());
-	}
-	private void handleConfirmation() {
-
-	if(isPlayerTurn)
-	{
-		Platform.runLater(() -> {
-			// update labels
-			confirm.set(m.getConfirm());
-			wordSelected.set("");
-
-			// this is the function that places the word on the board aka m.getWordSelected()
-			m.tryPlaceWord();
-			wordSelected.set(m.getWordSelected());
-
-			// update labels
-			row.set(m.getRow());
-			col.set(m.getCol());
-
-			// sanity check
-			System.out.println("word selected: " + wordSelected.get());
-			// try to add the word to the board
-
-			// wordselcted is the word that the user has selected
-			// if wordSelcted="" then the word is not valid
-			// if wordSelected!="", then the word is valid
-			if (!wordSelected.get().equals("") )
-			{
-				wordDirection.set(m.getWordDirection());
-			}
-			else {
-				int wordSize = userInput.size();
-				for (int i = 0; i < wordSize; i++) {
-					m.undoSelected();
-				}
-			}
-
-			// after word is confirmed, the letters are added to the board
-			// now the server will tell all the players to update their boards
-
-			lastEntry.clear();
-			lastEntry.addAll(userInput);
-			userInput.clear();
-
-			m.cleanList();
-			m.serverSendMessagesToAllClients(protocols.BOARD_CHANGED);
-			System.out.println("Message sent: BOARD_CHANGED");
-			m.serverSendMessagesToAllClients(protocols.UPDATE_SCORE);
-			System.out.println("Message sent: UPDATE_SCORE");
-			m.serverSendMessagesToAllClients(protocols.UPDATE_TURN);
-			System.out.println("Message sent: UPDATE_TURN");
-			turn.set(m.getTurn());
-
-				}
-		);
-
-
-	}
-
-
-
-	}
-	private void handleChallengeRequest() {
-		confirm.set("Challenge");
-		wordSelected.set("");
-	}
-
-	private void handleChallengeAccepted() {
-		confirm.set("Challenge");
-		wordSelected.set("");
-		System.out.println("lastEntry: " + lastEntry.get());
-//		int wordSize = lastEntry.size();
-//		for (int i = 0; i < wordSize; i++) {
-//			board[lastEntry.get(i).getRow()][lastEntry.get(i).getColumn()].set("");
-//			setBackground(lastEntry.get(i).getRow(), lastEntry.get(i).getColumn());
-//		}
-
-		playerPoints.set(m.getPlayerScore());
-	}
 
 	private void updateLetterList() {
 		// update the letters the player see
@@ -315,91 +349,7 @@ public class ViewModel extends Observable implements Observer {
 		}
 	}
 
-	private void getTilesLeft() {
-		Platform.runLater(() -> tilesLeft.set(m.getTilesLeft()));
 
-	}
-
-	private void handleClearRequest() {
-		confirm.set("");
-		wordSelected.set("");
-		row.set("");
-		col.set("");
-		wordDirection.set("");
-	}
-
-
-
-	public void handlePass()
-	{
-		if(isPlayerTurn) {
-			Platform.runLater(() -> {
-			confirm.set("Passed Turn");
-			wordSelected.set("");
-			row.set("");
-			col.set("");
-			wordDirection.set("");
-			ArrayList<CharacterData> input = m.getCharacterList();
-			int wordSize = input.size();
-			for (CharacterData characterData : input) {
-				board[characterData.getRow()][characterData.getColumn()].set("");
-				setBackground(characterData.getRow(), characterData.getColumn());
-			}
-			userInput.clear();
-			System.out.println("userInput: " + userInput);
-
-			m.cleanList();
-			updateLetterList();
-			m.serverSendMessagesToAllClients(protocols.UPDATE_TURN);
-			System.out.println("Message sent: UPDATE_TURN");
-			turn.set(m.getTurn());
-			//getTilesLeft();
-			});
-		}
-	}
-
-
-	private void handleUndoRequest() {
-	Platform.runLater(() -> {
-		CharacterData input = m.getUndoLetter();
-
-		if (input!=null) {
-			confirm.set("");
-			wordSelected.set("");
-			row.set("");
-			col.set("");
-			wordDirection.set("");
-			int i = input.getRow();
-			int j = input.getColumn();
-			letterList.add(Character.toString(input.getLetter()));
-			board[i][j].set("");
-			setBackground(i, j);
-			}
-			//m.serverSendMessagesToAllClients(protocols.BOARD_CHANGED);
-
-				}
-		);
-
-	}
-	private void handleRestartRequest() {
-		updateLetterList();
-		confirm.set("");
-		wordSelected.set("");
-		row.set("");
-		col.set("");
-		wordDirection.set("");
-		userInput.clear();
-		System.out.println("userInput: "+userInput);
-
-		m.cleanList();
-		getTilesLeft();
-		playerPoints.set(m.getPlayerScore());
-
-	}
-
-	private void handleLetterSelection() {
-		letter.set(String.valueOf(m.getLetter()));
-	}
 
 	private void setBackground(int i, int j) {
 		// set the background color of a spesific tile
@@ -421,10 +371,6 @@ public class ViewModel extends Observable implements Observer {
 		}
 	}
 
-	public void restartGame() {
-		m.restart();
-		resetGameBoard();
-	}
 	private void resetGameBoard() {
 		// reset all the game board
 		for (int i = 0; i < 15; i++) {
@@ -478,7 +424,6 @@ public class ViewModel extends Observable implements Observer {
 				board[i][j] = new SimpleStringProperty();
 				background[i][j] = new SimpleObjectProperty<>();
 			}
-		//		inputkey.addListener((o,ov,nv)->m.setInputKey((int)nv)
 	}
 
 
