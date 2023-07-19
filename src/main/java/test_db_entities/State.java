@@ -11,6 +11,7 @@ public class State{
     private String bag;
     private String lastTurnBoard;
     private String board;
+    private int numPassed;
 
     public int getId() {
         return id;
@@ -46,6 +47,10 @@ public class State{
 
     public String getBoard() {
         return board;
+    }
+
+    public int getNumPassed() {
+        return numPassed;
     }
 
     public void setId(int id) {
@@ -84,14 +89,20 @@ public class State{
         this.board = board;
     }
 
+
+
+    public void setNumPassed(int numPassed) {
+        this.numPassed = numPassed;
+    }
+
     public String toString()
     {
-        return "id:" + id + " ip:" + ip + " port:" + port + " currentTurn:" + currentTurn + " lastScore:" + lastScore + " players:" + players + " bag:" + bag + " lastTurnBoard:" + lastTurnBoard + " board:" + board;
+        return "id:" + id + " ip:" + ip + " port:" + port + " currentTurn:" + currentTurn + " lastScore:" + lastScore + " players:" + players + " bag:" + bag + " lastTurnBoard:" + lastTurnBoard + " board:" + board + " numPassed:" + numPassed;
     }
 
     public String toSaveString()
     {
-        return id + " " + ip + " " + port + " " + currentTurn + " " + lastScore + " " + players + " " + bag + " " + lastTurnBoard + " " + board;
+        return id + " " + ip + " " + port + " " + currentTurn + " " + lastScore + " " + players + " " + bag + " " + lastTurnBoard + " " + board + " " + numPassed;
     }
 
     public void fromSaveString(String saveString)
@@ -106,5 +117,6 @@ public class State{
         bag = splitSaveString[6];
         lastTurnBoard = splitSaveString[7];
         board = splitSaveString[8];
+        numPassed = Integer.parseInt(splitSaveString[9]);
     }
 }

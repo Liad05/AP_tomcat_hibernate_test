@@ -6,10 +6,12 @@ package model;
 
 
 //import org.json.simple.JSONObject;
+import RequestsAndResponses.RequestsStringBuilder;
 import test.ClientHandler;
 import test.GameManager;
 import test.Tile;
 import test.Word;
+import test_db_entities.State;
 
 import java.io.*;
 import java.util.HashMap;
@@ -17,7 +19,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerHandler implements ClientHandler{
+    private   String IP ;
     //private Socket client;
+    private State state = new State();
     private BufferedReader in;
     private PrintWriter out;
     private boolean exit=false;
@@ -28,6 +32,7 @@ public class PlayerHandler implements ClientHandler{
     private static AtomicInteger turn = new AtomicInteger(0);
     private static AtomicBoolean gameStarted = new AtomicBoolean(false);
     private HashMap<Character, Integer> letterScores = new HashMap<>(); // temporary saves the letter and its score
+    private int port;
 
     @Override
     public void handleClient(InputStream inFromclient, OutputStream outToClient) {
@@ -41,6 +46,8 @@ public class PlayerHandler implements ClientHandler{
         String msgFromPlayer= null;
         try {
             gm=GameManager.get();
+            this.IP = in.readLine();
+            this.port = Integer.parseInt(in.readLine());
             msgFromPlayer=in.readLine();//gets the id from the client
             playerId= Integer.parseInt(msgFromPlayer);
             System.out.println("[Server]client "+msgFromPlayer);
@@ -136,6 +143,8 @@ public class PlayerHandler implements ClientHandler{
     }
 
     private void saveGame(){
+        state.setIp(this.IP);
+        state.setPort(this.port);
 //
 //        // we need to save the game
 //        // board state, players, scores, current player, bag
@@ -145,6 +154,21 @@ public class PlayerHandler implements ClientHandler{
 //
 //        JSONObject gameData = new JSONObject();
 //        // Add data to the JSON object
+        state.setBoard(gm.getBoard());
+        state.setLastTurnBoard(gm.getLastTurnBoard());
+        state.setPlayers(gm.getPlayersData());
+        state.setCurrentTurn(gm.getCurrentPlayer().getId());
+        state.setBag(gm.getTileBag());
+        state.setNumPassed(gm.getNumPassed());
+        state.setLastScore(gm.getLastScore());
+        String s;
+        try {
+            s = RequestsStringBuilder.postState("/saveState",state);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 //        gameData.put("board", gm.getBoard());
 //        gameData.put("lastTurnBoard", gm.getLastTurnBoard());
 //        gameData.put("players", gm.getPlayersData());
@@ -161,28 +185,34 @@ public class PlayerHandler implements ClientHandler{
 
     }
     private void loadGame() {
+        try {
+            state = RequestsStringBuilder.getState("/getState",this.IP,this.port);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 //        try (FileReader fileReader = new FileReader("gameData.json")) {
 //            // Read the JSON file
 //            JSONParser parser = new JSONParser();
 //            JSONObject gameData = (JSONObject) parser.parse(fileReader);
 //
 //            // Retrieve the data from the JSON object
-//            String board = (String) gameData.get("board");
-//            String lastTurnboard = (String) gameData.get("lastTurnBoard");
-//            String playersArray = (String) gameData.get("players");
-//            int currentTurn = ((Long) gameData.get("currentTurn")).intValue();
-//            String bagString = (String) gameData.get("bag");
-//            int numPassed = ((Long) gameData.get("numPassed")).intValue();
-//            int lastScore = ((Long) gameData.get("lastScore")).intValue();
+            String board = (String) state.getBoard();
+            String lastTurnboard = (String) state.getLastTurnBoard();
+            String playersArray = (String)  state.getPlayers();
+            int currentTurn = state.getCurrentTurn();
+            String bagString = (String) state.getBag();
+            //int numPassed = state.getNumPassed(); #TODO: fix this
+            int lastScore = state.getLastScore();
 //
 //            // Reconstruct the game state
-//            gm.loadGame(board, lastTurnboard, playersArray, currentTurn, bagString, numPassed, lastScore, this.letterScores);
+            gm.loadGame(board, lastTurnboard, playersArray, currentTurn, bagString, 0, lastScore, this.letterScores);
 //
-//            // now all the players need to be updated
-//            this.serverSendMsg(protocols.GET_BOARD+","+gm.getBoard());
-//            this.serverSendMsg(protocols.GET_SCORE+","+gm.getScores());
-//            this.serverSendMsg(protocols.GET_TURN+","+gm.getCurrentPlayer().getId());
-//            this.serverSendMsg(protocols.HAND_CHANGED);
+            // now all the players need to be updated
+            this.serverSendMsg(protocols.GET_BOARD+","+gm.getBoard());
+            this.serverSendMsg(protocols.GET_SCORE+","+gm.getScores());
+            this.serverSendMsg(protocols.GET_TURN+","+gm.getCurrentPlayer().getId());
+            this.serverSendMsg(protocols.HAND_CHANGED);
 //
 //
 //        } catch (IOException | ParseException e) {

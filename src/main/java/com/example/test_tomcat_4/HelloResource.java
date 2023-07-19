@@ -24,7 +24,7 @@ public class HelloResource {
         Session session = sessionFactory.openSession();
         Query query1 = session.createQuery(query);
         List<State> list1 = query1.list();
-        return list1.get(0).toSaveString();
+        return list1.get(list1.size()-1).toSaveString();
 
     }
 

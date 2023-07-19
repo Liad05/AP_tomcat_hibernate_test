@@ -69,6 +69,8 @@ public class Model extends Observable {
 
 			// first step: when the client connects to the server, the server sends him his id
 			this.id = Integer.parseInt(in.readLine());
+			out.println(ip);
+			out.println(port);
 			System.out.println("Connected to server, client " + id);
 			isHost = id == 0;
 
