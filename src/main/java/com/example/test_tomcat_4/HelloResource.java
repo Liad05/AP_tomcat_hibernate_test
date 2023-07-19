@@ -27,8 +27,14 @@ public class HelloResource {
     @POST
     @Path("/saveState")
     @Produces("text/plain")
-    public String hello(@QueryParam("state") String stateString) {
+    public String hello(String stateString) {
+        System.out.println("we're in.");
         State testState = new State();
+        testState.fromSaveString(stateString);
+        StateManager stateManager = new StateManager(new Configuration().configure().buildSessionFactory().openSession());
+        stateManager.saveState(testState);
+        return stateString+" it works!";
+//        State testState = new State();
 //        testState.setIp("127.0.0.1");
 //        testState.setPort(port);
 //        testState.setCurrentTurn(0);
@@ -45,7 +51,7 @@ public class HelloResource {
 //        catch (Exception e){
 //            return "save failed";
 //        }
-        return "save failed";
+//        return "save failed";
 
     }
 }
