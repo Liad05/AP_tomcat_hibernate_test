@@ -178,6 +178,8 @@ public class GameManager {
     }
     public String getLastTurnBoard()
     {
+        if(lastTurnBoard==null)
+            return board.toString();
         return lastTurnBoard.toString();
     }
     public int getLastScore()

@@ -6,6 +6,6 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath(HttpMacros.applicationPrefix)
-public class HelloApplication extends Application {
+public class WebApplication extends Application {
 
 }

@@ -6,7 +6,7 @@ package model;
 
 
 //import org.json.simple.JSONObject;
-import RequestsAndResponses.RequestsStringBuilder;
+import RequestsAndResponses.RequestsBuildExec;
 import model_foundations.ClientHandler;
 import model_foundations.GameManager;
 import model_foundations.Tile;
@@ -156,14 +156,14 @@ public class PlayerHandler implements ClientHandler{
         String s;
 
         try {
-            s = RequestsStringBuilder.postState("/saveState",state);
+            s = RequestsBuildExec.postState("/saveState",state);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     private void loadGame() {
         try {
-            state = RequestsStringBuilder.getState("/getState",this.IP,this.port);
+            state = RequestsBuildExec.getState("/getState",this.IP,this.port);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,12 +10,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 //http://localhost:8080/test_tomcat_4_war_exploded/api/hello-world/test2?ID=4
-public class RequestsStringBuilder {
+public class RequestsBuildExec {
     String prefix = HttpMacros.getFullPrefix();
     boolean isGet;
     String state;
 
-    public RequestsStringBuilder(State state) {//post statement
+    public RequestsBuildExec(State state) {//post statement
         this.state = state.toSaveString();
         isGet = false;
 
