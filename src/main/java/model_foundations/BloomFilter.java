@@ -1,4 +1,4 @@
-package test;
+package model_foundations;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

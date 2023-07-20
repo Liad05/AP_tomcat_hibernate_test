@@ -1,4 +1,4 @@
-package test;
+package model_foundations;
 
 import java.io.InputStream;
 import java.io.OutputStream;

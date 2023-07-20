@@ -5591,10 +5591,10 @@ Ron.
 
 
 
-“Some sort of test, I think. Fred said it hurts a lot, but 
+“Some sort of model_foundations, I think. Fred said it hurts a lot, but
 I think he was joking.” 
 
-Harry’s heart gave a horrible jolt. A test? In front of 
+Harry’s heart gave a horrible jolt. A model_foundations? In front of
 the whole school? But he didn’t know any magic yet 
 — what on earth would he have to do? He hadn’t 
 expected something like this the moment they 
@@ -12025,7 +12025,7 @@ of magical discoveries and goblin rebellions. ...
 Then, about a week before the exams were due to 
 start, Harry’s new resolution not to interfere in 
 anything that didn’t concern him was put to an 
-unexpected test. Walking back from the library on his 
+unexpected model_foundations. Walking back from the library on his
 own one afternoon, he heard somebody whimpering 
 from a classroom up ahead. As he drew closer, he 
 heard Quirrell’s voice. 
@@ -12060,7 +12060,7 @@ with a new spring in his step — Quirrell seemed to
 have given in at last. 
 
 Harry went back to the library, where Hermione was 
-testing Ron on Astronomy. Harry told them what he’d 
+hibernate_tomcat_testing Ron on Astronomy. Harry told them what he’d
 heard. 
 
 “Snape’s done it, then!” said Ron. “If Quirrell’s told 

@@ -1,6 +1,6 @@
 package RequestsAndResponses;
 
-import test_db_entities.State;
+import db_entities.State;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

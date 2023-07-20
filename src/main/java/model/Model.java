@@ -1,9 +1,9 @@
 package model;
 
-import test.CharacterData;
-import test.GameManager;
-import test.Tile;
-import test.Word;
+import model_foundations.CharacterData;
+import model_foundations.GameManager;
+import model_foundations.Tile;
+import model_foundations.Word;
 
 import java.io.BufferedReader;
 import java.io.IOException;

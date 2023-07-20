@@ -1,7 +1,7 @@
-package test_db_managers;
+package db_managers;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import test_db_entities.State;
+import db_entities.State;
 
 import java.util.List;
 

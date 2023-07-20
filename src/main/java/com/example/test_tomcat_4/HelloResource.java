@@ -5,8 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import test_db_entities.State;
-import test_db_managers.StateManager;
+import db_entities.State;
+import db_managers.StateManager;
 
 import javax.ws.rs.*;
 import java.util.List;

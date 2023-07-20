@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import test.CharacterData;
+import model_foundations.CharacterData;
 import viewmodel.ViewModel;
 
 import java.util.Observable;

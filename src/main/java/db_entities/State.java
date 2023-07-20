@@ -1,4 +1,4 @@
-package test_db_entities;
+package db_entities;
 
 
 public class State{

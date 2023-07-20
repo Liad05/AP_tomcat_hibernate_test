@@ -1,4 +1,4 @@
-package test;
+package model_foundations;
 
 public class CharacterData {
     private char character;

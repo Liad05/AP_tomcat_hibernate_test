@@ -9,7 +9,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import model.Model;
 import model.protocols;
-import test.CharacterData;
+import model_foundations.CharacterData;
 
 import java.util.ArrayList;
 import java.util.Arrays;

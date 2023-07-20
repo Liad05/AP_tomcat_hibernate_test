@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 <hibernate-mapping>
-    <class name="test_db_entities.State" table="state" >
+    <class name="db_entities.State" table="state" >
         <id name="id" type="java.lang.Integer" column="id" >
             <generator class="increment" />
         </id>

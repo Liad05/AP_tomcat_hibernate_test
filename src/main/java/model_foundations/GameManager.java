@@ -1,4 +1,4 @@
-package test;
+package model_foundations;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -7,11 +7,11 @@ package model;
 
 //import org.json.simple.JSONObject;
 import RequestsAndResponses.RequestsStringBuilder;
-import test.ClientHandler;
-import test.GameManager;
-import test.Tile;
-import test.Word;
-import test_db_entities.State;
+import model_foundations.ClientHandler;
+import model_foundations.GameManager;
+import model_foundations.Tile;
+import model_foundations.Word;
+import db_entities.State;
 
 import java.io.*;
 import java.util.HashMap;

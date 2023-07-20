@@ -1,21 +1,7 @@
-package testing;
+package hibernate_tomcat_testing;
 
-import RequestsAndResponses.HttpMacros;
 import RequestsAndResponses.RequestsStringBuilder;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-import test_db_entities.State;
-import test_db_managers.StateManager;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import db_entities.State;
 
 public class Main {
     public static void main(String[] args) throws Exception{

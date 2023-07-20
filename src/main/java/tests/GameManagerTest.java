@@ -1,7 +1,7 @@
-package realTest;
+package tests;
 
-import test.GameManager;
-import test.Player;
+import model_foundations.GameManager;
+import model_foundations.Player;
 
 public class GameManagerTest {
     public static void main(String[] args) {

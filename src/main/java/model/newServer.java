@@ -1,6 +1,6 @@
 package model;
 
-import test.ClientHandler;
+import model_foundations.ClientHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
