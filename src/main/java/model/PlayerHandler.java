@@ -19,20 +19,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerHandler implements ClientHandler{
-    private   String IP ;
-    //private Socket client;
+    private String IP ;
+    private int port;
     private State state = new State();
     private BufferedReader in;
     private PrintWriter out;
-    private boolean exit=false;
     private int playerId;
     private static GameManager gm;
     private newServer server;
     private static AtomicInteger connectedClients = new AtomicInteger(0);
-    private static AtomicInteger turn = new AtomicInteger(0);
     private static AtomicBoolean gameStarted = new AtomicBoolean(false);
     private HashMap<Character, Integer> letterScores = new HashMap<>(); // temporary saves the letter and its score
-    private int port;
 
     @Override
     public void handleClient(InputStream inFromclient, OutputStream outToClient) {
@@ -145,15 +142,10 @@ public class PlayerHandler implements ClientHandler{
     private void saveGame(){
         state.setIp(this.IP);
         state.setPort(this.port);
-//
-//        // we need to save the game
-//        // board state, players, scores, current player, bag
-////        String board = gm.getBoard();
-////        ArrayList<Player> players = gm.getPlayers();
-////        int currentTurn = gm.getCurrentPlayer().getId();
-//
-//        JSONObject gameData = new JSONObject();
-//        // Add data to the JSON object
+
+        // we need to save the game
+        // board state, players, scores, current player, bag
+
         state.setBoard(gm.getBoard());
         state.setLastTurnBoard(gm.getLastTurnBoard());
         state.setPlayers(gm.getPlayersData());
@@ -162,46 +154,26 @@ public class PlayerHandler implements ClientHandler{
         state.setNumPassed(gm.getNumPassed());
         state.setLastScore(gm.getLastScore());
         String s;
+
         try {
             s = RequestsStringBuilder.postState("/saveState",state);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-//        gameData.put("board", gm.getBoard());
-//        gameData.put("lastTurnBoard", gm.getLastTurnBoard());
-//        gameData.put("players", gm.getPlayersData());
-//        gameData.put("currentTurn", gm.getCurrentPlayer().getId());
-//        gameData.put("bag", gm.getTileBag());
-//        gameData.put("numPassed", gm.getNumPassed());
-//        gameData.put("lastScore", gm.getLastScore());
-//        try (FileWriter fileWriter = new FileWriter("gameData.json")) {
-//            // Write JSON object to file
-//            fileWriter.write(gameData.toJSONString());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
     }
     private void loadGame() {
         try {
             state = RequestsStringBuilder.getState("/getState",this.IP,this.port);
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-//        try (FileReader fileReader = new FileReader("gameData.json")) {
-//            // Read the JSON file
-//            JSONParser parser = new JSONParser();
-//            JSONObject gameData = (JSONObject) parser.parse(fileReader);
-//
-//            // Retrieve the data from the JSON object
-            String board = (String) state.getBoard();
-            String lastTurnboard = (String) state.getLastTurnBoard();
-            String playersArray = (String)  state.getPlayers();
+
+            String board = state.getBoard();
+            String lastTurnboard =  state.getLastTurnBoard();
+            String playersArray =  state.getPlayers();
             int currentTurn = state.getCurrentTurn();
-            String bagString = (String) state.getBag();
+            String bagString = state.getBag();
             //int numPassed = state.getNumPassed(); #TODO: fix this
             int lastScore = state.getLastScore();
 //
@@ -213,26 +185,7 @@ public class PlayerHandler implements ClientHandler{
             this.serverSendMsg(protocols.GET_SCORE+","+gm.getScores());
             this.serverSendMsg(protocols.GET_TURN+","+gm.getCurrentPlayer().getId());
             this.serverSendMsg(protocols.HAND_CHANGED);
-//
-//
-//        } catch (IOException | ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Client client = ClientBuilder.newClient();
-//        String endpointUrl = "http://loacalhost:9000/test_hibernate/game"; // Replace with the appropriate URL
-//
-//        try {
-//            String response = client
-//                    .target(endpointUrl)
-//                    .request(MediaType.APPLICATION_JSON)
-//                    .get(String.class);
-//
-//            // Process the response and update the game state
-//        } catch (Exception e) {
-//            System.out.println("Exception: " + e.getMessage());
-//        } finally {
-//            client.close();
-//        }
+
     }
 
     private void endGame() {
@@ -241,8 +194,6 @@ public class PlayerHandler implements ClientHandler{
 
     private void sendLastScore(int lastScore) {
         out.println(protocols.GET_LAST_SCORE+","+lastScore);
-        //out.println(lastScore);
-
     }
 
     private boolean challenge() {
@@ -350,7 +301,7 @@ public class PlayerHandler implements ClientHandler{
         out.println(protocols.GET_TURN+","+gm.getCurrentTurn());
     }
 
-    private void sendBoard() {// TODO - need to check if true
+    private void sendBoard() {
         System.out.println("[PlayerHandler] board: " + gm.getBoard());
         out.println(protocols.GET_BOARD+","+gm.getBoard());
     }
