@@ -15,6 +15,7 @@
         <property name="bag" type="java.lang.String" column="bag" length="98" />
         <property name="lastTurnBoard" type="java.lang.String" column="lastTurnBoard" length="225"/>
         <property name="board" type="java.lang.String" column="board" length="225"/>
+        <property name="numPassed" type="java.lang.Integer" column="numPassed" length="100" />
 
     </class>
 </hibernate-mapping>
