@@ -174,11 +174,11 @@ public class PlayerHandler implements ClientHandler{
             String playersArray =  state.getPlayers();
             int currentTurn = state.getCurrentTurn();
             String bagString = state.getBag();
-            //int numPassed = state.getNumPassed(); #TODO: fix this
+            int numPassed = state.getNumPassed();
             int lastScore = state.getLastScore();
 //
 //            // Reconstruct the game state
-            gm.loadGame(board, lastTurnboard, playersArray, currentTurn, bagString, 0, lastScore, this.letterScores);
+            gm.loadGame(board, lastTurnboard, playersArray, currentTurn, bagString, numPassed, lastScore, this.letterScores);
 //
             // now all the players need to be updated
             this.serverSendMsg(protocols.GET_BOARD+","+gm.getBoard());
