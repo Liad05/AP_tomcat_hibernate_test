@@ -83,4 +83,35 @@ public class RequestsBuildExec {
 
     }
 
+    public static State getStateByID(String addPostFix,int ID) throws Exception{
+        State retState = new State();
+
+        URL obj = new URL(HttpMacros.getFullPrefix()+addPostFix+"?"+"ID="+ID);
+        HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+        int responseCode = conn.getResponseCode();
+        System.out.println("GET Response Code :: " + responseCode);
+        StringBuffer response = new StringBuffer();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // success
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // print result
+            System.out.println(response.toString());
+        } else {
+            System.out.println("GET request did not work.");
+        }
+
+        retState.fromSaveString(response.toString());
+        return retState;
+
+    }
+
 }
