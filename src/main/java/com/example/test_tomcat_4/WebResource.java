@@ -40,7 +40,12 @@ public class WebResource {
     public String getStatesById ( @QueryParam("ID") int ID) {
         int gameID = ID;
         String query = String.format("from State where id  = \'%d\'", gameID);
-        return getString(query);
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Query query1 = session.createQuery(query);
+        List<State> list1 = query1.list();
+
+        return list1.get(list1.size()-1).toCompString();
 
     }
 

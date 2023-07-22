@@ -119,4 +119,21 @@ public class State{
         board = splitSaveString[8];
         numPassed = Integer.parseInt(splitSaveString[9]);
     }
+
+    public  String toCompString()//comprehensive string
+    {
+        String retString = "";
+        String[] tempPlayer;
+        retString += "id:" + id + "\n ";
+        String playersStr = players;
+        String[] playersList = playersStr.split(",");
+        for(String player: playersList){
+            tempPlayer = player.split(":");//seperate player id from score and hand
+
+            retString+="player number "+tempPlayer[0]+" score:"+tempPlayer[1].split(";")[0]+"\n ";
+        }
+        return retString;
+
+
+    }
 }
