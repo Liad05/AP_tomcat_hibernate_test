@@ -60,7 +60,7 @@ public class WebResource {
 
     @POST
     @Path("/saveState")
-    @Consumes("text/plain")
+    @Consumes("application/x-www-form-urlencoded")
     public String saveState(String stateString) {
         System.out.println("we're in.");
         State testState = new State();
