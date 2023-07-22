@@ -28,7 +28,7 @@ This is a Java-based Scrabble game developed with an MVVM (Model-View-ViewModel)
 
 ## Prerequisites
 
-- Java Development Kit (JDK) version 19 or higher
+- Java Development Kit (JDK) version 11 
 - Android device (for the Android app)
 
 ## Installation
